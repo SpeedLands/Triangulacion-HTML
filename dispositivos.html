@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+	<title>SLTRECBA</title>	
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap5.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+     table.dataTable thead {
+           background-color:#32224b;
+           color:aliceblue;
+       }  
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="#">
+                <img src="assets/l.png" style="height: 40px; width: auto; margin-right: 10px;"/> 
+                <span style="font-size: 20px; font-weight: bold;">SLTRECBA</span> 
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item"><a class="nav-link" href="index.html" id="nav1">Triangulacion</a></li>
+                    <li class="nav-item"><a class="nav-link" href="info.html" id="nav2">Acerca De</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="nav3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="usuarios.html">Usuarios</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="dispositivos.html">Dispositivos</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="entorno.html">Entorno</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header class="bg-primary shadow py-3">
+        <div class="container sha">
+            <div>
+                <h8 class="display-8 fw-bolder text-white">Dispositivos</h8>
+            </div>
+        </div>
+    </header>
+    <section class="py-5" id="entorno">
+        <div class="container border rounded p-3 bg-light shadow">
+            <div class="row">
+                <div class="container mt-5 col-4">
+                    <h2>Agregar Nuevo Registro</h2>
+                    <form id="formularioAgregar">
+                        <div class="mb-3">
+                            <label for="dispositivo" class="form-label">Nombre Dispositivos</label>
+                            <input type="text" class="form-control" id="dispositivo" placeholder="Nombre Dispositivos">
+                        </div>
+                        <div class="mb-3">
+                            <label for="mac" class="form-label">MAC</label>
+                            <input type="text" class="form-control" id="mac" placeholder="MAC">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rssi" class="form-label">RSSI</label>
+                            <input type="number" class="form-control" id="rssi" placeholder="RSSI">
+                        </div>
+                        <div class="mb-3">
+                            <label for="x" class="form-label">X</label>
+                            <input type="number" class="form-control" id="x" placeholder="Coordenada X">
+                        </div>
+                        <div class="mb-3">
+                            <label for="y" class="form-label">Y</label>
+                            <input type="number" class="form-control" id="y" placeholder="Coordenada Y">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+                <div class="col-8">
+                    <div class="container-fluid table-responsive">
+                        <div class="d-grid grid-cols-2 align-items-center">
+                            <div class="container mt-5">
+                                <h2>Tabla De Registros</h2>
+                                <table id="tablaDispositivos" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>MAC</th>
+                                            <th>RSSI</th>
+                                            <th>X</th>
+                                            <th>Y</th>
+                                            <th>Acciones</th> 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal de edición -->
+        <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditarLabel">Editar Registro</h5>
+                    <button type="button" class="btn-light shadow rounded" data-bs-dismiss="modal" aria-label="Close">X</button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario para editar -->
+                    <form id="formularioEditar">
+                        <div class="mb-3">
+                            <label for="dispositivoEditar" class="form-label">Nombre Dispositivos</label>
+                            <input type="text" class="form-control" id="dispositivoEditar" placeholder="Nombre Dispositivos">
+                        </div>
+                        <div class="mb-3">
+                            <label for="macEditar" class="form-label">MAC</label>
+                            <input type="text" class="form-control" id="macEditar" placeholder="MAC">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rssiEditar" class="form-label">RSSI</label>
+                            <input type="number" class="form-control" id="rssiEditar" placeholder="RSSI">
+                        </div>
+                        <div class="mb-3">
+                            <label for="xEditar" class="form-label">X</label>
+                            <input type="number" class="form-control" id="xEditar" placeholder="Coordenada X">
+                        </div>
+                        <div class="mb-3">
+                            <label for="yEditar" class="form-label">Y</label>
+                            <input type="number" class="form-control" id="yEditar" placeholder="Coordenada Y">
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal de eliminar --> 
+        <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEliminarLabel">Eliminar Registro</h5>
+                    <button type="button" class="btn-light shadow rounded" data-bs-dismiss="modal" aria-label="Close">X</button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario para eliminar -->
+                    <form id="formularioEliminar">
+                    <input type="hidden" id="idEliminar">
+                    <h1>¿Estas seguro de eliminar este registro?</h1>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Eliminar Registro</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>       
+    </section>
+    <footer class="py-5 bg-primary" id="piedepagina">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; SLTRECBA 2024</p></div>
+    </footer>
+    
+
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap5.min.js"></script>   
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>     
+<script>
+    $(document).ready(function() {
+        var url = 'http://localhost:3000/api/dispositivos';
+
+        $('#tablaDispositivos').DataTable({
+            "ajax": {
+                "url": url,
+                "dataSrc": ""
+            },
+            "columns": [
+                {"data": "id"},
+                {"data": "dispositivo"},
+                {"data": "mac"},
+                {"data": "rssi"},
+                {"data": "x"},
+                {"data": "y"},
+                { // Columna para acciones
+                    "data": null,
+                    "defaultContent": "<button class='editarBtn btn btn-primary'>Editar</button><button class='eliminarBtn btn btn-danger'>Eliminar</button>"
+                }
+            ],
+        });
+
+        // Manejo de evento para abrir el modal de edición
+        $('#tablaDispositivos').on('click', '.editarBtn', function() {
+            var data = $('#tablaDispositivos').DataTable().row($(this).parents('tr')).data();
+            $('#idEditar').val(data.id);
+            $('#dispositivoEditar').val(data.dispositivo);
+            $('#macEditar').val(data.mac);
+            $('#rssiEditar').val(data.rssi);
+            $('#xEditar').val(data.x);
+            $('#yEditar').val(data.y);
+            $('#modalEditar').modal('show');
+        });
+
+        // Manejo de evento para abrir el modal de eliminar
+        $('#tablaDispositivos').on('click', '.eliminarBtn', function() {
+            var data = $('#tablaDispositivos').DataTable().row($(this).parents('tr')).data();
+            $('#idEliminar').val(data.id);
+            $('#modalEliminar').modal('show');
+        });
+
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        // Manejo de evento para enviar el formulario de agregar
+        $('#formularioAgregar').submit(function(event) {
+            event.preventDefault(); // Prevenir el envío del formulario por defecto
+
+            // Obtener los valores del formulario
+            var dispositivo = $('#dispositivo').val();
+            var mac = $('#mac').val();
+            var rssi = $('#rssi').val();
+            var x = $('#x').val();
+            var y = $('y').val();
+
+            // Crear objeto de datos en formato JSON
+            var formData = {
+                temperatura: Temperatura,
+                humedad: Humedad
+            };
+
+            // Convertir datos del formulario a JSON
+            var jsonData = JSON.stringify(formData);
+
+            // Enviar solicitud AJAX con los datos JSON
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:3000/api/th/new',
+                contentType: 'application/json',
+                data: jsonData,
+                success: function(data) {
+                    // Manejar la respuesta del servidor si es necesario
+                    console.log(data);
+                    // Recargar los datos de la tabla después de modificar un elemento
+                    $('#tablaArticulos').DataTable().ajax.reload();
+                },
+                error: function(err) {
+                    console.error(err);
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+    // Manejo de evento para enviar el formulario de edición
+    $('#formularioEditar').submit(function(event) {
+        event.preventDefault(); // Prevenir el envío del formulario por defecto
+
+        // Obtener los valores del formulario
+        var id = $('#idEditar').val();
+        var temperatura = $('#TemperaturaEditar').val();
+        var humedad = $('#HumedadEditar').val();
+
+        // Crear objeto de datos en formato JSON
+        var formData = {
+            id: id,
+            temperatura: temperatura,
+            humedad: humedad
+        };
+
+        // Convertir datos del formulario a JSON
+        var jsonData = JSON.stringify(formData);
+
+        // Enviar solicitud AJAX con los datos JSON
+        $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:3000/api/edit/entorno/' + id,
+            contentType: 'application/json',
+            data: jsonData,
+            success: function(data) {
+                // Manejar la respuesta del servidor si es necesario
+                console.log(data);
+                
+                // Recargar los datos de la tabla después de modificar un elemento
+                $('#tablaArticulos').DataTable().ajax.reload();
+                
+                // Ocultar el modal de edición después de modificar el elemento
+                $('#modalEditar').modal('hide');
+            },
+            error: function(err) {
+                console.error(err);
+            }
+        });
+    });
+});
+</script>
+<script>
+    $(document).ready(function() {
+    // Manejo de evento para enviar el formulario de eliminación
+    $('#formularioEliminar').submit(function(event) {
+        event.preventDefault(); // Prevenir el envío del formulario por defecto
+
+        // Obtener el ID del detalle a eliminar
+        var id = $('#idEliminar').val();
+
+        console.log("ID del detalle a eliminar:", id);
+        console.log("URL de la solicitud DELETE:", 'http://localhost:3000/api/delete/entorno/' + id);
+
+
+        // Enviar solicitud AJAX para eliminar el elemento
+        $.ajax({
+            type: 'DELETE',
+            url: 'http://localhost:3000/api/delete/entorno/' + id,
+            success: function(data) {
+                // Manejar la respuesta del servidor si es necesario
+                console.log(data);
+                
+                // Recargar los datos de la tabla después de eliminar un elemento
+                $('#tablaArticulos').DataTable().ajax.reload();
+                
+                // Ocultar el modal de eliminación después de eliminar el elemento
+                $('#modalEliminar').modal('hide');
+            },
+            error: function(err) {
+                console.error(err);
+            }
+        });
+    });
+});
+
+</script>
+</body>
+</html>
